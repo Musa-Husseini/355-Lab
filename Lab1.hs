@@ -19,14 +19,14 @@ insert n y (x:xs) = x:(insert (n - 1) y xs)
 
 --2. insertEvery
 
--- insertEvery :: (Eq t, Num t) => t -> a -> [a] -> [a]
+insertEvery :: (Eq t, Num t) => t -> a -> [a] -> [a]
 
--- insertEvery n y xs = insertEvery` n n y xs
---     where 
---         insertEvery` n 0 y xs = [y]
---         insertEvery` _ _ _ [] = []
---         insertEvery` n 0 y xs = y:(insertEvery` n n y xs)
---         insertEvery` n i h (x:xs) = x : (insertEvery` n  (i-1) xs)
+insertEvery n y xs = insertEvery' n n y xs
+    where 
+        insertEvery' _ 0 y [] = [y]
+        insertEvery' _ _ _ [] = [] 
+        insertEvery' n 0 y xs = y:(insertEvery' n n y xs)
+        insertEvery' n i y (x:xs) = x : (insertEvery' n  (i-1) y xs)
 
         
     -- 3. getSales
@@ -39,7 +39,7 @@ getSales targetDay ((day, numSold):rest)
     | otherwise = getSales targetDay rest
     -- 4. sumSales
 
-sumSales :: (Num p) => String -> String -> [(String,[String, p])] -> p
+sumSales :: (Num p) => String -> String -> [(String, [(String, p)])] -> p
 sumSales s day [] = 0
 sumSales s day ((store, log):xs) | s == store = (getSales day log) + (sumSales s day xs)
                                  | otherwise = sumSales s day xs
