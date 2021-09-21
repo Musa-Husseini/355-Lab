@@ -43,21 +43,28 @@ matchingSeconds targetAnimal ((animal, num) : rest)
 clusterCommon::(Eq t,Eq a) => [(t,a)]->[(t,[a])]
 
 clusterCommon [] = []
-clusterCommon ((animal, num) : rest)  = animal : (matchingSeconds )
+clusterCommon l1 = map (\i -> (i, matchingSeconds i l1)) kxs'
+    where 
+        ( kxs, _ ) = unzip l1
+        kxs' = eliminateDuplicates kxs
 
 -- Q3 maxNumCases
 
 maxNumCases::(Num p, Ord p, Eq t) => [(a, [(t,p)])] -> t-> p
 
 maxNumCases [] t = 0
-maxNumCases ((month, num) : xs) targetMonth | targetMonth == month = num + maxNumCases month xs
-                                  | otherwise = maxNumCases month xs
+--maxNumCases ((month, num) : rest) targetMonth     | targetMonth == month = num + (maxNumCases rest targetMonth)
+  --                                                | otherwise = maxNumCases month rest
+
 
 
 -- Q4 groupIntoLists
 groupIntoLists :: [a] -> [[a]]
-groupIntoLists [] = [[]]
-groupIntoLists (x:xs) = (x:xs) : groupIntoLists xs
+groupIntoLists = groupIntoLists' 1
+     where
+          groupIntoLists' _ [] = []
+          groupIntoLists' n xs = (take n xs) : groupIntoLists' (n+1) (drop n xs)
+
 
 -- Q5 getSlice 
 
